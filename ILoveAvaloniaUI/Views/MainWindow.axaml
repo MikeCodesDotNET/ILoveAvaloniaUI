@@ -1,0 +1,76 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:ILoveAvaloniaUI.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="600" d:DesignHeight="350"
+        WindowStartupLocation="CenterScreen"
+        Width="600" Height="350"
+        x:Class="ILoveAvaloniaUI.Views.MainWindow"
+        Icon="/Assets/avalonia-logo.ico"
+        Title="I Love Avalonia UI">
+
+    <Design.DataContext>
+        <vm:MainWindowViewModel/>
+    </Design.DataContext>
+
+    <Grid RowDefinitions="*, Auto" Margin="25">
+        
+        <Grid ColumnDefinitions="Auto, Auto, Auto"
+              HorizontalAlignment="Center"
+              VerticalAlignment="Center">
+            
+            <TextBlock Grid.Column="0" 
+                       Text="I" 
+                       FontSize="40" 
+                       FontWeight="SemiBold"
+                       VerticalAlignment="Center"/>
+            
+            <Image Grid.Column="1" 
+                   Source="../Assets/Heart.png"
+                   Width="{Binding HeartSize}"/>
+            
+            <TextBlock Grid.Column="2" 
+                       Text="Avalonia UI" 
+                       FontSize="40" 
+                       FontWeight="SemiBold"
+                       VerticalAlignment="Center"/>
+            
+        </Grid>
+        
+        <Border Grid.Row="1" 
+                CornerRadius="10" 
+                Background="LightGray"
+                Padding="15">
+            
+            <Grid  ColumnDefinitions="Auto, *, Auto">
+                <Button Grid.Column="0" 
+                        Margin="0, 7, 15, 0"
+                        Command="{Binding DecreaseLoveCommand}" 
+                        Width="50" Height="50"
+                        HorizontalContentAlignment="Center"
+                        VerticalContentAlignment="Center"
+                        Background="Orange">-</Button>
+            
+                <Slider Grid.Column="1" 
+                        Minimum="{Binding MinLove}" 
+                        Maximum="{Binding MaxLove}"  
+                        TickFrequency="1"
+                        TickPlacement="Outside"
+                        IsSnapToTickEnabled="True"
+                        Value="{Binding LoveValue}"/>
+            
+                <Button Grid.Column="2" 
+                        Margin="15, 7, 0, 0"
+                        Command="{Binding IncreaseLoveCommand}" 
+                        Width="50" Height="50"
+                        HorizontalContentAlignment="Center"
+                        VerticalContentAlignment="Center"
+                        Background="DarkGreen">+</Button>
+            </Grid>
+
+        </Border>
+       
+    </Grid>
+
+</Window>
