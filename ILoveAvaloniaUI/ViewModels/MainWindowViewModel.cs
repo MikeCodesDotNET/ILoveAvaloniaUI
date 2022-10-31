@@ -1,16 +1,34 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
+﻿using System.Windows.Input;
+using ReactiveUI;
 
 namespace ILoveAvaloniaUI.ViewModels
 {
-    public partial class MainWindowViewModel : ViewModelBase
+    public class MainWindowViewModel : ViewModelBase
     {
-        [ObservableProperty]
-        [NotifyPropertyChangedFor(nameof(HeartSize))]
-        private double loveValue;
+        public ICommand IncreaseLoveCommand { get; init; }
+        public ICommand DecreaseLoveCommand { get; init; }
         
-        [ObservableProperty] private double minLove;
-        [ObservableProperty] private double maxLove;
+        public double LoveValue
+        {
+            get => loveValue;
+            set
+            {
+                this.RaiseAndSetIfChanged(ref loveValue, value);
+                this.RaisePropertyChanged(nameof(HeartSize));
+            }
+        }
+        
+        public double MinLove 
+        {
+            get => minLove;
+            set => this.RaiseAndSetIfChanged(ref minLove, value);
+        }
+        
+        public double MaxLove 
+        {
+            get => maxLove;
+            set => this.RaiseAndSetIfChanged(ref maxLove, value);
+        }
 
         public double HeartSize => LoveValue * 20;
 
@@ -19,17 +37,19 @@ namespace ILoveAvaloniaUI.ViewModels
             MinLove = 5;
             MaxLove = 12;
             LoveValue = 6;
+
+            IncreaseLoveCommand = ReactiveCommand.Create(IncreaseLove);
+            DecreaseLoveCommand = ReactiveCommand.Create(DecreaseLove);
+            
         }
         
-        [RelayCommand]
         private void IncreaseLove()
         {
             if (LoveValue == MaxLove)
                 return;
             LoveValue++;
         }
-
-        [RelayCommand]
+       
         private void DecreaseLove()
         {
             if (LoveValue == MinLove)
@@ -37,6 +57,8 @@ namespace ILoveAvaloniaUI.ViewModels
             LoveValue--;
         }
 
-       
+        private double loveValue;
+        private double minLove;
+        private double maxLove;
     }
 }
