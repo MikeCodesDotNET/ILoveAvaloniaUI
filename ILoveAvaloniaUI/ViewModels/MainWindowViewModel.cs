@@ -1,4 +1,5 @@
-﻿using System.Windows.Input;
+﻿using System;
+using System.Windows.Input;
 using ReactiveUI;
 
 namespace ILoveAvaloniaUI.ViewModels
@@ -10,24 +11,24 @@ namespace ILoveAvaloniaUI.ViewModels
         
         public double LoveValue
         {
-            get => loveValue;
+            get => _loveValue;
             set
             {
-                this.RaiseAndSetIfChanged(ref loveValue, value);
+                this.RaiseAndSetIfChanged(ref _loveValue, value);
                 this.RaisePropertyChanged(nameof(HeartSize));
             }
         }
         
         public double MinLove 
         {
-            get => minLove;
-            set => this.RaiseAndSetIfChanged(ref minLove, value);
+            get => _minLove;
+            set => this.RaiseAndSetIfChanged(ref _minLove, value);
         }
         
         public double MaxLove 
         {
-            get => maxLove;
-            set => this.RaiseAndSetIfChanged(ref maxLove, value);
+            get => _maxLove;
+            set => this.RaiseAndSetIfChanged(ref _maxLove, value);
         }
 
         public double HeartSize => LoveValue * 20;
@@ -45,20 +46,20 @@ namespace ILoveAvaloniaUI.ViewModels
         
         private void IncreaseLove()
         {
-            if (LoveValue == MaxLove)
+            if (Math.Abs(LoveValue - MaxLove) < 0.001)
                 return;
             LoveValue++;
         }
        
         private void DecreaseLove()
         {
-            if (LoveValue == MinLove)
+            if (Math.Abs(LoveValue - MinLove) < 0.001)
                 return;
             LoveValue--;
         }
 
-        private double loveValue;
-        private double minLove;
-        private double maxLove;
+        private double _loveValue;
+        private double _minLove;
+        private double _maxLove;
     }
 }
