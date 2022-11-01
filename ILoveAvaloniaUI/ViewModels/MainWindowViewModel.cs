@@ -1,36 +1,12 @@
 ﻿using System;
-using System.Windows.Input;
-using ReactiveUI;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+
 
 namespace ILoveAvaloniaUI.ViewModels
 {
-    public class MainWindowViewModel : ViewModelBase
+    public partial class MainWindowViewModel : ViewModelBase
     {
-        public ICommand IncreaseLoveCommand { get; init; }
-        public ICommand DecreaseLoveCommand { get; init; }
-        
-        public double LoveValue
-        {
-            get => _loveValue;
-            set
-            {
-                this.RaiseAndSetIfChanged(ref _loveValue, value);
-                this.RaisePropertyChanged(nameof(HeartSize));
-            }
-        }
-        
-        public double MinLove 
-        {
-            get => _minLove;
-            set => this.RaiseAndSetIfChanged(ref _minLove, value);
-        }
-        
-        public double MaxLove 
-        {
-            get => _maxLove;
-            set => this.RaiseAndSetIfChanged(ref _maxLove, value);
-        }
-
         public double HeartSize => LoveValue * 20;
 
         public MainWindowViewModel()
@@ -38,12 +14,9 @@ namespace ILoveAvaloniaUI.ViewModels
             MinLove = 5;
             MaxLove = 12;
             LoveValue = 6;
-
-            IncreaseLoveCommand = ReactiveCommand.Create(IncreaseLove);
-            DecreaseLoveCommand = ReactiveCommand.Create(DecreaseLove);
-            
         }
         
+        [RelayCommand]
         private void IncreaseLove()
         {
             if (Math.Abs(LoveValue - MaxLove) < 0.001)
@@ -51,6 +24,7 @@ namespace ILoveAvaloniaUI.ViewModels
             LoveValue++;
         }
        
+        [RelayCommand]
         private void DecreaseLove()
         {
             if (Math.Abs(LoveValue - MinLove) < 0.001)
@@ -58,8 +32,14 @@ namespace ILoveAvaloniaUI.ViewModels
             LoveValue--;
         }
 
+        [ObservableProperty]
+        [NotifyPropertyChangedFor(nameof(HeartSize))]
         private double _loveValue;
+        
+        [ObservableProperty]
         private double _minLove;
+        
+        [ObservableProperty]
         private double _maxLove;
     }
 }
